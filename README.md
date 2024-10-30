@@ -16,3 +16,5 @@
 - Open 2 terminals, one on /backend and one on /frontend
 - Run `npm i` on both to install all dependencies
 - Run `npm run dev` on both to start each server
+
+As of now, you can only see something if you visit "Rooms" from the navigation bar.
