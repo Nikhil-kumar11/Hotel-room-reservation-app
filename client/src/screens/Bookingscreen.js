@@ -48,7 +48,7 @@ function Bookingscreen() {
       setLoading(false);
     }
     fetchRoom();
-  }, [roomid]);
+  }, [roomid, totalDays]);
 
   return (
     <div className="m-5">
