@@ -5,8 +5,11 @@ import moment from "moment";
 import { useParams } from "react-router-dom";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
+import StripeCheckout from 'react-stripe-checkout';
 
-async function bookRoom(room, fromdate, todate, totaldays, totalamount) {
+
+async function onToken(token, room, fromdate, todate, totaldays, totalamount,) {
+  console.log(token);
   const bookingDetails = {
     room,
     userid: JSON.parse(localStorage.getItem("currentUser"))._id,
@@ -14,6 +17,7 @@ async function bookRoom(room, fromdate, todate, totaldays, totalamount) {
     todate,
     totaldays,
     totalamount,
+    token,
   };
 
   try {
@@ -27,7 +31,7 @@ async function bookRoom(room, fromdate, todate, totaldays, totalamount) {
 function Bookingscreen() {
   const { roomid, fromdate, todate } = useParams();
   const [loading, setLoading] = useState(true);
-  const [totalAmount, setTotalAmount] = useState();
+  const [totalamount, setTotalAmount] = useState();
   const totalDays =
     moment
       .duration(
@@ -91,14 +95,16 @@ function Bookingscreen() {
               </div>
 
               <div style={{ float: "right" }}>
-                <button
-                  className="btn btn-primary"
-                  onClick={() => {
-                    bookRoom(room, fromdate, todate, totalDays, totalAmount);
-                  }}
+                <StripeCheckout
+                  amount={totalamount * 100}
+                  currency="EUR"
+                  token={(token) => onToken(token, room, fromdate, todate, totalDays, totalamount)}
+                  stripeKey="pk_test_51QMyElHOTgqZ5CRUDLT48mMPt1EDf4elPVDPGYmCzpVh9clcNsqXswNtmhX5SjYHuJ1xlxbxAToNpXTff9tGqNXP00uPSysu39"
                 >
-                  Book now
-                </button>
+
+                  <button className="btn btn-primary">Pay Now {" "} </button>
+
+                </StripeCheckout>
               </div>
             </div>
           </div>
