@@ -32,10 +32,10 @@ code {
   border-radius: 5px !important;
 }
 h1 {
-  font-size: 20px !important;
+  font-size: 20px ;
 }
 .btn {
-  background-color: black !important;
+  background-color: black ;
   color: white !important;
 }
 .bs {
@@ -53,4 +53,19 @@ input {
   box-shadow: none !important;
   margin-top: 10px;
   border: 1px solid #666666 !important;
+}
+
+.Landing{
+  background-color: black !important;
+  height: 100vh;
+}
+
+.landingbtn{
+  background-color: white !important;
+  color: black !important;
+  margin-top: 20px;
+}
+
+.landing .col-md-9{
+  border-right: 5px solid white !important;
 }

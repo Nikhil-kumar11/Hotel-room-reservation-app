@@ -6,9 +6,10 @@ import { useParams } from "react-router-dom";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
 import StripeCheckout from 'react-stripe-checkout';
+import swal from 'sweetalert2';
 
 
-async function onToken(token, room, fromdate, todate, totaldays, totalamount,) {
+async function onToken(token, room, fromdate, todate, totaldays, totalamount, setLoading) {
   console.log(token);
   const bookingDetails = {
     room,
@@ -21,10 +22,16 @@ async function onToken(token, room, fromdate, todate, totaldays, totalamount,) {
   };
 
   try {
+    setLoading(true);
     const result = (await axios.post("/api/bookings/bookroom", bookingDetails))
-      .data;
+    setLoading(false);
+    swal.fire('Congratulations' , 'Your room booked successfully', 'success').then(result=>{
+      window.location.href='/bookings'
+    })
   } catch (error) {
     console.log(error);
+    setLoading(false);
+    swal.fire('Oops' , 'Something went wrong :(', 'error')
   }
 }
 
