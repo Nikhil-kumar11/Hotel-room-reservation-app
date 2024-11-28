@@ -43,7 +43,7 @@ function Navbar() {
                 </button>
                 <ul class="dropdown-menu">
                   <li>
-                    <button class="dropdown-item" href='/bookings'>Bookings</button>
+                  <button class="dropdown-item" href="/profile">Profile</button>
                   </li>
                   <li>
                     <button class="dropdown-item" onClick={logout}>

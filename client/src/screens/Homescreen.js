@@ -6,7 +6,6 @@ import axios from "axios";
 // import { set } from "mongoose";
 import Room from "../components/Room";
 import Loader from "../components/Loader";
-import Error from "../components/Error";
 
 function filterByDate(dates, setToDate, setFromDate, duplicateRooms, setRooms) {
   setFromDate(dates[0].format("DD-MM-YYYY"));
@@ -46,6 +45,9 @@ function Homescreen() {
 
   const { RangePicker } = DatePicker;
 
+  const [searchkey , setsearchkey]= useState('')
+  const [type , settype] = useState('all')
+
   useEffect(() => {
     async function fetchRooms() {
       setLoading(true);
@@ -58,9 +60,30 @@ function Homescreen() {
     fetchRooms();
   }, []);
 
+  function filterBySearch(){
+
+    const tempRooms = duplicateRooms.filter(room=>room.name.toLowerCase().includes(searchkey.toLowerCase()))
+    setRooms(tempRooms)
+  }
+
+  function filterByType(e){
+
+    settype(e)
+
+    if(e!=='all'){
+      const tempRooms = duplicateRooms.filter(room=>room.type.toLowerCase()===e.toLowerCase())
+      setRooms(tempRooms)
+    }
+    else{
+      setRooms(duplicateRooms)
+    }
+
+  }
+
+
   return (
     <div className="Container">
-      <div className="row mt-4">
+      <div className="row mt-4 bs">
         <div className="col-md-3">
           <RangePicker
             format="DD-MM-YYYY"
@@ -75,11 +98,26 @@ function Homescreen() {
             }}
           />
         </div>
+
+        <div className="col-md-5">
+          <input type="text" className="form-control" placeholder="search rooms"
+          value = {searchkey} onChange={(e) => {setsearchkey(e.target.value)}} onKeyUp={filterBySearch}
+          />
+        </div>
+
+        <div className="col-md-3">
+          <select className="form-control" value={type} onCanchge={(e)=>{filterByType(e.target.value)}}>
+              <option value='all'>All</option>
+              <option value='delux'>Delux</option>
+              <option value='non-delux'>Non delux</option>
+          </select>
+        </div>
+
       </div>
 
       {loading ? (
         <Loader />
-      ) : rooms.length > 0 ? (
+      ) : (
         rooms.map((room) => {
           return (
             <div className="row justify-content-center mt-5">
@@ -89,8 +127,6 @@ function Homescreen() {
             </div>
           );
         })
-      ) : (
-        <Error />
       )}
     </div>
   );

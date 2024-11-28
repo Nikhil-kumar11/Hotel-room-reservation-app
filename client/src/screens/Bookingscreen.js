@@ -45,10 +45,15 @@ function Bookingscreen() {
         moment(todate, "DD-MM-YYYY").diff(moment(fromdate, "DD-MM-YYYY"))
       )
       .asDays() + 1;
-  //   const [error, seterror] = useState();
+  // const [error, seterror] = useState();
   const [room, setRoom] = useState();
 
   useEffect(() => {
+
+    if(localStorage.getItem('currentUser')){
+      window.location.reload='/login'
+    }
+
     async function fetchRoom() {
       setLoading(true);
       const { data } = await axios.post(`/api/rooms/getroombyid`, {
@@ -105,7 +110,7 @@ function Bookingscreen() {
                 <StripeCheckout
                   amount={totalamount * 100}
                   currency="EUR"
-                  token={(token) => onToken(token, room, fromdate, todate, totalDays, totalamount)}
+                  token={(token) => onToken(token, room, fromdate, todate, totalDays, totalamount, setLoading)}
                   stripeKey="pk_test_51QMyElHOTgqZ5CRUDLT48mMPt1EDf4elPVDPGYmCzpVh9clcNsqXswNtmhX5SjYHuJ1xlxbxAToNpXTff9tGqNXP00uPSysu39"
                 >
 
