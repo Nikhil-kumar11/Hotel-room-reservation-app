@@ -1,0 +1,37 @@
+name: hotel-reservation-app
+
+services:
+  api:
+    container_name: api-cont
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./backend/.env
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - hotel-reservation-app
+    ports:
+      - "3001:3001"
+    image: katrhss/hotel-reservation-app:api
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    # env_file: ./client/.env
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    networks:
+      - hotel-reservation-app
+    ports:
+      - 3000:3000
+    depends_on:
+      - api
+    image: katrhss/hotel-reservation-app:client
+networks:
+  hotel-reservation-app:
+    driver: bridge
