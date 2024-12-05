@@ -50,8 +50,8 @@ function Bookingscreen() {
 
   useEffect(() => {
 
-    if(localStorage.getItem('currentUser')){
-      window.location.reload='/login'
+    if(!localStorage.getItem('currentUser')){
+      window.location.href='/login'
     }
 
     async function fetchRoom() {

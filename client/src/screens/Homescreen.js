@@ -106,10 +106,10 @@ function Homescreen() {
         </div>
 
         <div className="col-md-3">
-          <select className="form-control" value={type} onCanchge={(e)=>{filterByType(e.target.value)}}>
-              <option value='all'>All</option>
-              <option value='delux'>Delux</option>
-              <option value='non-delux'>Non delux</option>
+          <select className="form-control" value={type} onChange={(e) => filterByType(e.target.value)}>
+                <option value="all">All</option>
+                <option value="delux">Delux</option>
+                <option value="non-delux">Non-delux</option>
           </select>
         </div>
 

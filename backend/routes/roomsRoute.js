@@ -19,4 +19,20 @@ router.post('/getroombyid', async (req, res) => {
         return res.json({ message: err });
     }
 }) 
+
+router.post('/addroom', async (req, res) => {
+    const roomid =  await req.body.roomid;
+    try {
+        const newroom = new Room(req.body)
+        await newroom.save()
+
+        res.send('New Room Added Succesfully')
+        
+    } catch (err) {
+        return res.json({ message: err });
+    }
+}) 
+
+
+
 module.exports = router;

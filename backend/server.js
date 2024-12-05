@@ -5,7 +5,7 @@ const app = express();
 const dbConfig = require("./db.js");
 const roomRoute = require("./routes/roomsRoute");
 const usersRoute = require("./routes/usersRoute");
-const bookingsRoute = require("./routes/bookingsRoute");
+const bookingsRoute = require("./routes/bookingsRoute"); // Path to your bookings route file
 
 app.use(express.json());
 

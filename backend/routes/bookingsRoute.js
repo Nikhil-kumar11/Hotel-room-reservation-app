@@ -80,41 +80,44 @@ router.post("/bookroom", async (req, res) => {
 
 });
 
-router.post("/getbookingsbyuserid", async(req , res) => {
-  const {userid} = req.body.userid
-
+router.post("/getbookingsbyuserid", async (req, res) => {
+  const { userid } = req.body;
+  console.log("Received userid in backend:", userid); // Log the user ID
   try {
-    const bookings = await Booking.find({userid : userid})
-    res.send(bookings)
+      const bookings = await Booking.find({ userid });
+      console.log("Bookings fetched from database:", bookings); // Log database results
+      res.send(bookings);
   } catch (error) {
-    return res.status(400).json({error});
+      console.error("Error fetching bookings:", error);
+      res.status(400).json({ error: "Unable to fetch bookings." });
   }
 });
 
-router.post('/cancelbooking', async(req, res) => {
-
-  const {bookingid , roomid} = req.body
+router.post('/cancelbooking', async (req, res) => {
+  const { bookingid, roomid } = req.body;
 
   try {
-    const bookingitem = await Booking.findOne({_id : bookingid})
+    const booking = await Booking.findOne({ _id: bookingid });
+    if (!booking) return res.status(404).json({ error: 'Booking not found' });
 
-    bookingitem.status ='cancelled'
+    booking.status = 'cancelled';
+    await booking.save();
 
-    await bookingitem.save()
+    const room = await Room.findOne({ _id: roomid });
+    if (!room) return res.status(404).json({ error: 'Room not found' });
 
-    const room = await Booking.findOne({_id : roomid})
+    if (room?.currentbookings?.length) {
+      const updatedBookings = room.currentbookings.filter(
+        (booking) => booking.bookingid.toString() !== bookingid
+      );
+      room.currentbookings = updatedBookings;
+      await room.save();
+    }
 
-    const bookings = room.currentbookings
-
-    const temp = bookings.filter(booking => booking.bookingid.toString()!==bookingid)
-    room.currentbookings = temp
-
-    await room.save()
-
-    res.send('Your booking cancelled succesfully!')
+    res.status(200).json({ message: 'Booking cancelled successfully' });
   } catch (error) {
-    return res.status(400).json({error});
-    
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 

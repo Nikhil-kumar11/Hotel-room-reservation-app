@@ -11,7 +11,7 @@ function Navbar() {
   const user = JSON.parse(localStorage.getItem("currentUser"));
   return (
     <div>
-      <nav class="navbar navbar-expand-lg ">
+      <nav className="navbar navbar-expand-lg ">
         <Link to="/home" class="navbar-brand">
           Airbnb
         </Link>
@@ -43,7 +43,7 @@ function Navbar() {
                 </button>
                 <ul class="dropdown-menu">
                   <li>
-                  <button class="dropdown-item" href="/profile">Profile</button>
+                    <Link className="dropdown-item" to="/profile">Profile</Link>
                   </li>
                   <li>
                     <button class="dropdown-item" onClick={logout}>

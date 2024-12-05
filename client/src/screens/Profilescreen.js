@@ -49,7 +49,9 @@ function Profilescreen() {
 
                     <h1>Name : {user.name}</h1>
                     <h1>Email : {user.email}</h1>
-                    <h1>isAdmin : {user.isAdmin ? 'YES' : 'NO'}</h1>
+                    <h1>isAdmin : {user.isAdmin ? 'YES' : 'NO'}
+
+                    </h1>
                 </TabPane>
                 <TabPane tab="Bookings" key="2">
                     <MyBookings/>
@@ -71,11 +73,14 @@ export function MyBookings(cancelBooking) {
         const fetchBookings = async () => {
             try {
                 setLoading(true);
+                console.log("Fetching bookings for user ID:", user._id); // Log user ID
                 const data = await axios.post("/api/bookings/getbookingsbyuserid", { userid: user._id });
+                console.log("Bookings fetched from backend:", data.data); // Log the response
                 setBookings(data.data);
+                console.log("Bookings state after fetch:", bookings);
             } catch (error) {
-                console.log(error);
-                seterror('Failed to load bookings.');
+                console.log("Error fetching bookings:", error); // Log any errors
+                seterror("Failed to load bookings.");
             } finally {
                 setLoading(false);
             }
